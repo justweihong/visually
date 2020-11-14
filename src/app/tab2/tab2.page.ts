@@ -23,6 +23,26 @@ export class Tab2Page {
     console.log("model loaded");
   }
 
+  onFileChanged(event) {
+    const file = event.target.files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (_event) => {
+      const image = new Image();
+      var result = String(reader.result);
+      console.log(result)
+      image.src = result;
+      image.width = 1000;
+      image.height = 1000;
+      console.log(image);
+      this.classifyPhoto(image);
+		}
+    // console.log(file);
+  }
+  ab2str(buf) {
+    return String.fromCharCode.apply(null, new Uint16Array(buf));
+  }
+
   /**
    * Use mobilenet pre-trained model to classify image.
    * @param image the Image to classify.
