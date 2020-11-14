@@ -31,6 +31,12 @@ export class Tab2Page {
     const predictions = await this.model.classify(image);
     console.log('Predictions: ');
     console.log(predictions);
+    var resultDisplay1 = document.getElementById("result1");
+    var resultDisplay2 = document.getElementById("result2");
+    var resultDisplay3 = document.getElementById("result3");
+    resultDisplay1.textContent = predictions[0]['className'] + predictions[0]['probability'];
+    resultDisplay2.textContent = predictions[1]['className'] + predictions[1]['probability'];
+    resultDisplay3.textContent = predictions[2]['className'] + predictions[2]['probability'];
     
   }
 
