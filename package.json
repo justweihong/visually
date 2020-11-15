@@ -29,6 +29,7 @@
     "@tensorflow/tfjs-backend-cpu": "^2.7.0",
     "@tensorflow/tfjs-backend-webgl": "^2.7.0",
     "core-js": "^3.6.5",
+    "request": "^2.88.2",
     "rxjs": "^6.5.5",
     "tslib": "^1.11.1",
     "zone.js": "^0.10.3"
