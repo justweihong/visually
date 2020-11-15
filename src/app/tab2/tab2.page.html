@@ -1,3 +1,4 @@
+
 <ion-header>
   <ion-toolbar>
     <ion-title>
@@ -5,27 +6,38 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Gallery</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-grid>
-    <ion-row>
-    <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
-      <ion-img [src]="photo.webviewPath" (click)="showActionSheet(photo, position)"></ion-img>
-    </ion-col>
-    </ion-row>
-  </ion-grid>
 
-  <ion-fab class="upload-button" vertical="bottom" horizontal="center" slot="fixed">
-    <label>
-      <ion-fab-button>
-        <ion-icon name="camera"></ion-icon>
-      </ion-fab-button>
-      <input type="file" class="upload-input" (change)="onFileChanged($event)" accept="image/*">
-    </label>
-  </ion-fab>
+  <ion-refresher style="height:5em;" slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content 
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+      gfdsagfdsgfdsgfd
+    </ion-refresher-content>
+  </ion-refresher>
+      <ion-header collapse="condense">
+        <ion-toolbar>
+          <ion-title size="large">Gallery</ion-title>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-grid>
+        <ion-row>
+        <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
+          <ion-img [src]="photo.webviewPath" (click)="showActionSheet(photo, position)"></ion-img>
+        </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-fab class="upload-button" vertical="bottom" horizontal="center" slot="fixed">
+        <label>
+          <ion-fab-button>
+            <ion-icon name="camera"></ion-icon>
+          </ion-fab-button>
+          <input type="file" class="upload-input" (change)="onFileChanged($event)" accept="image/*">
+        </label>
+      </ion-fab>
+      
 </ion-content>

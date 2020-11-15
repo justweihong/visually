@@ -107,4 +107,19 @@ export class Tab2Page {
     });
     await actionSheet.present();
   }
+
+
+  /**
+   * Refresh the gallery and model with ngOnInit hook.
+   */
+  async doRefresh(event) {
+    await this.ngOnInit();
+    event.target.complete();
+
+    // setTimeout(() => {
+    //   console.log('Async operation has ended');
+    //   event.target.complete();
+    // }, 2000);
+  }
+
 }
