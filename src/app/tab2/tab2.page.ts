@@ -34,29 +34,31 @@ export class Tab2Page {
     console.log("save photos loaded.");
     this.model = await mobilenet.load();
     console.log("model loaded");
-    console.log(this.storage.storage)
-    this.upload.getIPs().then(data => console.log(data)); 
+
   }
 
   onFileChanged(event) {
+    const self = this;
     const file = event.target.files[0];
+    const filepath = file.name;
     var reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = (_event) => {
+    reader.onload = async (_event) => {
       const image = new Image();
       var result = String(reader.result);
-      console.log(result)
+      // console.log(result)
       image.src = result;
-      image.width = 1000;
-      image.height = 1000;
-      console.log(image);
-      this.classifyPhoto(image);
+      image.onload = async function () {
+        console.log(`width : ${image.width} px`, `height: ${image.height} px`);
+        const webviewPath = result;
+        const predictions = await self.classifyPhoto(image);
+        // this.upload.uploadFile(file);
+        self.photoService.addNewUploadToGallery(filepath, webviewPath, predictions)
+      };
+      
 
-
-      this.upload.uploadFile(file);
-      this.storage.ref('cat.jpg').getDownloadURL().subscribe(url => {this.catRef = url});
+      // this.storage.ref('cat.jpg').getDownloadURL().subscribe(url => {this.catRef = url});
 		}
-    // console.log(file);
   }
   ab2str(buf) {
     return String.fromCharCode.apply(null, new Uint16Array(buf));
@@ -76,7 +78,7 @@ export class Tab2Page {
     resultDisplay1.textContent = predictions[0]['className'] + predictions[0]['probability'];
     resultDisplay2.textContent = predictions[1]['className'] + predictions[1]['probability'];
     resultDisplay3.textContent = predictions[2]['className'] + predictions[2]['probability'];
-    
+    return predictions;
   }
 
   /**
