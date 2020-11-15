@@ -57,16 +57,6 @@ export class Tab2Page {
     return await modal.present();  
   }  
 
-  async openTimedToast() {  
-    const toast = await this.toastCtrl.create({  
-      message: 'It is a Toast Notification',  
-      duration: 5000,
-      position: 'top',
-      translucent: true,
-    });  
-    toast.present();  
-  }
-
   async loadModel() {  
     const toast = await this.toastCtrl.create({  
       message: 'loading model...',
@@ -82,6 +72,15 @@ export class Tab2Page {
    * Uploads a new photo when a file change is detected.
    */
   async onFileChanged(event) {
+
+    // Display uploading notification
+    const toast = await this.toastCtrl.create({  
+      message: 'uploading photo...',
+      position: 'top',
+      translucent: true,   
+    });  
+    toast.present(); 
+
     const self = this; // To reference tab component in local scope.
     const file = event.target.files[0];
 
@@ -97,7 +96,8 @@ export class Tab2Page {
         const filepath = file.name;
         const webviewPath = image.src;
         const predictions = await self.classifyPhoto(image);
-        self.photoService.addNewUploadToGallery(filepath, webviewPath, predictions)
+        await self.photoService.addNewUploadToGallery(filepath, webviewPath, predictions)
+        toast.dismiss();
       };
     }
 
