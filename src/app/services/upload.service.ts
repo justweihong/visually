@@ -6,6 +6,11 @@ import { HttpClient  } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
+
+/**
+ * This services handles the uploading process into the cloud storage.
+ * Currently still incomplete as API functions have not been successfully implemented.
+ */
 export class UploadService {
 
   constructor(
@@ -14,6 +19,9 @@ export class UploadService {
     private http : HttpClient
   ) { }
 
+  /**
+   * Retrieves the IP address of the client.
+   */
   async getIPs() {  
     return new Promise( (resolve, reject) => {
       this.http.post('https://us-central1-visually-84fb9.cloudfunctions.net/getIPs3', {}).subscribe(data => {
@@ -23,6 +31,9 @@ export class UploadService {
     });
   } 
 
+  /**
+   * Uploads a file into the cloud storage.
+   */
   async uploadFile(file: File) {
 
     // Upload file into FireStorage.

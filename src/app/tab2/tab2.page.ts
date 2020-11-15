@@ -1,14 +1,10 @@
 import { Component } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 import { Photo, PhotoService } from '../services/photo.service';
-import { UploadService } from '../services/upload.service';
 
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import '@tensorflow/tfjs-backend-webgl'
 import '@tensorflow/tfjs-backend-cpu'
-
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireStorage, AngularFireUploadTask, createStorageRef } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-tab2',
@@ -24,11 +20,11 @@ export class Tab2Page {
   constructor(
     public photoService: PhotoService, 
     public actionSheetController: ActionSheetController,
-    public afs: AngularFirestore,
-    public storage: AngularFireStorage,
-    public upload: UploadService
     ) {}
 
+  /**
+   * Loads the gallery and the mobilenet model.
+   */
   async ngOnInit() {
     await this.photoService.loadSaved();
     console.log("save photos loaded.");
@@ -37,29 +33,31 @@ export class Tab2Page {
 
   }
 
-  onFileChanged(event) {
-    const self = this;
+  /**
+   * Uploads a new photo when a file change is detected.
+   */
+  async onFileChanged(event) {
+    const self = this; // To reference tab component in local scope.
     const file = event.target.files[0];
-    const filepath = file.name;
+
+    // Get image details from file.
     var reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = async (_event) => {
       const image = new Image();
-      var result = String(reader.result);
-      // console.log(result)
-      image.src = result;
-      image.onload = async function () {
-        console.log(`width : ${image.width} px`, `height: ${image.height} px`);
-        const webviewPath = result;
+      image.src = String(reader.result);
+      image.onload = async function () { // Loads the original image.width and image.height so that mobilenet model can classify
+        
+        // Get image upload details
+        const filepath = file.name;
+        const webviewPath = image.src;
         const predictions = await self.classifyPhoto(image);
-        // this.upload.uploadFile(file);
         self.photoService.addNewUploadToGallery(filepath, webviewPath, predictions)
       };
-      
+    }
 
-      // this.storage.ref('cat.jpg').getDownloadURL().subscribe(url => {this.catRef = url});
-		}
   }
+
   ab2str(buf) {
     return String.fromCharCode.apply(null, new Uint16Array(buf));
   }
@@ -70,14 +68,7 @@ export class Tab2Page {
    */
   async classifyPhoto(image: HTMLImageElement) {
     const predictions = await this.model.classify(image);
-    console.log('Predictions: ');
     console.log(predictions);
-    var resultDisplay1 = document.getElementById("result1");
-    var resultDisplay2 = document.getElementById("result2");
-    var resultDisplay3 = document.getElementById("result3");
-    resultDisplay1.textContent = predictions[0]['className'] + predictions[0]['probability'];
-    resultDisplay2.textContent = predictions[1]['className'] + predictions[1]['probability'];
-    resultDisplay3.textContent = predictions[2]['className'] + predictions[2]['probability'];
     return predictions;
   }
 
