@@ -35,7 +35,7 @@ export class Tab2Page {
     this.model = await mobilenet.load();
     console.log("model loaded");
     console.log(this.storage.storage)
-    console.log(this.upload.getIPAddress());
+    this.upload.getIPs().then(data => console.log(data)); 
   }
 
   onFileChanged(event) {

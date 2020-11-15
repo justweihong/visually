@@ -14,12 +14,13 @@ export class UploadService {
     private http : HttpClient
   ) { }
 
-  async getIPAddress() {  
+  async getIPs() {  
     return new Promise( (resolve, reject) => {
-      this.http.get("http://api.ipify.org/?format=json").subscribe((res:any) => {
-        resolve(res.ip);
-      });
-    });  
+      this.http.post('https://us-central1-visually-84fb9.cloudfunctions.net/getIPs3', {}).subscribe(data => {
+        console.log(data);
+        resolve(data);
+      })
+    });
   } 
 
   async uploadFile(file: File) {
