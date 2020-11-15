@@ -8,7 +8,7 @@ import '@tensorflow/tfjs-backend-webgl'
 import '@tensorflow/tfjs-backend-cpu'
 
 import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireStorage, AngularFireUploadTask, createStorageRef } from '@angular/fire/storage';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-tab2',
@@ -46,18 +46,14 @@ export class Tab2Page {
     reader.onload = async (_event) => {
       const image = new Image();
       var result = String(reader.result);
-      // console.log(result)
       image.src = result;
       image.onload = async function () {
         console.log(`width : ${image.width} px`, `height: ${image.height} px`);
         const webviewPath = result;
         const predictions = await self.classifyPhoto(image);
-        // this.upload.uploadFile(file);
         self.photoService.addNewUploadToGallery(filepath, webviewPath, predictions)
       };
-      
-
-      // this.storage.ref('cat.jpg').getDownloadURL().subscribe(url => {this.catRef = url});
+    
 		}
   }
   ab2str(buf) {
