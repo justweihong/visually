@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import * as request from 'request';
-import * as cors from 'cors';
+// import * as request from 'request';
+// import * as cors from 'cors';
 admin.initializeApp(functions.config().firebase);
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
