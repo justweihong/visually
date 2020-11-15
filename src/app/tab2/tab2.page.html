@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Photo Gallery
+      Gallery
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,15 +9,9 @@
 <ion-content>
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Photo Gallery</ion-title>
+      <ion-title size="large">Gallery</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-img id="cat" src="../assets/cat.jpg"></ion-img>
-  <ion-img id="cat" [src]="catRef"></ion-img>
-  <div id="result1">result1</div>
-  <div id="result2">result2</div>
-  <div id="result3">result3</div>
-  <input type="file" (change)="onFileChanged($event)" accept="image/*">
   <ion-grid>
     <ion-row>
     <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
@@ -26,9 +20,12 @@
     </ion-row>
   </ion-grid>
 
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="photoService.addNewToGallery()">
-      <ion-icon name="camera"></ion-icon>
-    </ion-fab-button>
+  <ion-fab class="upload-button" vertical="bottom" horizontal="center" slot="fixed">
+    <label>
+      <ion-fab-button>
+        <ion-icon name="camera"></ion-icon>
+      </ion-fab-button>
+      <input type="file" class="upload-input" (change)="onFileChanged($event)" accept="image/*">
+    </label>
   </ion-fab>
 </ion-content>
