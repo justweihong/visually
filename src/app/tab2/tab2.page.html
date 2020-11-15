@@ -31,11 +31,11 @@
       </ion-grid>
 
       
-      <input id="upload-input" type="file" class="upload-input" (change)="onFileChanged($event)" accept="image/*">
       <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-          <ion-fab-button id="upload-button" class="upload-button">
-              <ion-icon name="camera" style="z-index:1;"></ion-icon>
-          </ion-fab-button>
+        <ion-fab-button id="upload-button" class="upload-button" (click)="clickUpload()">
+            <ion-icon name="camera" style="z-index:1;"></ion-icon>
+            <input id="upload-input" type="file" class="upload-input" (change)="onFileChanged($event)" accept="image/*">
+        </ion-fab-button>
         
       </ion-fab>
       

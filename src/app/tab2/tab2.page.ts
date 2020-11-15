@@ -31,16 +31,10 @@ export class Tab2Page {
     console.log("save photos loaded.");
     this.model = await mobilenet.load();
     console.log("model loaded");
-
-    $( document ).ready(function() {
-      // console.log( "ready!" );
-      $('#upload-button').on('click', function(event) { 
-        event.preventDefault(); 
-        console.log("clicked!");
-        $("#upload-input").click(); 
-      });
-    });
     
+  }
+  clickUpload() {
+    $("#upload-input").click(); 
   }
 
   /**
