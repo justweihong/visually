@@ -12,9 +12,7 @@
     <ion-refresher-content 
       pullingIcon="chevron-down-circle-outline"
       pullingText="Pull to refresh"
-      refreshingSpinner="circles"
-      refreshingText="Refreshing...">
-      gfdsagfdsgfdsgfd
+      refreshingSpinner="circles">
     </ion-refresher-content>
   </ion-refresher>
       <ion-header collapse="condense">
@@ -26,7 +24,7 @@
       <ion-grid>
         <ion-row>
         <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
-          <ion-img [src]="photo.webviewPath" (click)="showActionSheet(photo, position)"></ion-img>
+          <app-image-card [image]="photo" (click)="showActionSheet(photo, position)"></app-image-card>
         </ion-col>
         </ion-row>
       </ion-grid>
