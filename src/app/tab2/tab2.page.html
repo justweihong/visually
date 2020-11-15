@@ -24,8 +24,8 @@
       <ion-grid>
         <ion-row>
         <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
-          <app-image-card [image]="photo" (click)="showActionSheet(photo, position)"></app-image-card>
-          <input type="file" class="upload-input" (change)="onFileChanged($event)" accept="image/*">
+          <!-- <app-image-card [image]="photo" (click)="showActionSheet(photo, position)"></app-image-card> -->
+          <app-image-card [image]="photo" (click)="showModal(photo)"></app-image-card>
         </ion-col>
         </ion-row>
       </ion-grid>
@@ -33,7 +33,7 @@
       
       <ion-fab vertical="bottom" horizontal="center" slot="fixed">
         <ion-fab-button id="upload-button" class="upload-button" (click)="clickUpload()">
-            <ion-icon name="camera" style="z-index:1;"></ion-icon>
+            <ion-icon name="camera" ></ion-icon>
             <input id="upload-input" type="file" class="upload-input" (change)="onFileChanged($event)" accept="image/*">
         </ion-fab-button>
         

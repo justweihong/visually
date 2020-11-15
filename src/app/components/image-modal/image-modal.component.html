@@ -1,0 +1,19 @@
+<ion-header>  
+  <ion-toolbar>  
+    <ion-title>{{filepath}}</ion-title>  
+    <ion-icon name='close-circle' (click)='dismiss()' style='float: right;'></ion-icon>  
+  </ion-toolbar>  
+</ion-header>  
+  
+<ion-content>  
+  <ion-img [src]="webviewPath"></ion-img>
+  <ion-item-group>
+    <ion-item-divider><ion-label class="class-label-name">{{this.predictions[0]['className']}}</ion-label></ion-item-divider>
+    <ion-item-divider><ion-label id="prob-1" class="class-label-prob">{{getPercentage(this.predictions[0]['probability'])}}</ion-label></ion-item-divider>
+    <ion-item-divider><ion-label class="class-label-name">{{this.predictions[1]['className']}}</ion-label></ion-item-divider>
+    <ion-item-divider><ion-label id="prob-2" class="class-label-prob">{{getPercentage(this.predictions[1]['probability'])}}</ion-label></ion-item-divider>
+    <ion-item-divider><ion-label class="class-label-name">{{this.predictions[2]['className']}}</ion-label></ion-item-divider>
+    <ion-item-divider><ion-label id="prob-3" class="class-label-prob">{{getPercentage(this.predictions[2]['probability'])}}</ion-label></ion-item-divider>
+  </ion-item-group>
+  
+</ion-content>  

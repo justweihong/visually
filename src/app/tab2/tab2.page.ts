@@ -7,6 +7,9 @@ import '@tensorflow/tfjs-backend-webgl'
 import '@tensorflow/tfjs-backend-cpu'
 import * as $ from 'jquery';
 
+import { ModalController} from '@ionic/angular'; 
+import { ImageModalComponent } from '../components/image-modal/image-modal.component';
+
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
@@ -21,6 +24,7 @@ export class Tab2Page {
   constructor(
     public photoService: PhotoService, 
     public actionSheetController: ActionSheetController,
+    public modalCtrl: ModalController,
     ) {}
 
   /**
@@ -33,9 +37,25 @@ export class Tab2Page {
     console.log("model loaded");
     
   }
+
   clickUpload() {
     $("#upload-input").click(); 
   }
+
+  async showModal(photo) {  
+    const modal = await this.modalCtrl.create({  
+      component: ImageModalComponent,
+      cssClass: 'image-modal',
+      showBackdrop: true,
+      backdropDismiss: true,
+      animated: true,
+      swipeToClose: true,
+      componentProps: {
+        'photo': photo,
+      }
+    });  
+    return await modal.present();  
+  }  
 
   /**
    * Uploads a new photo when a file change is detected.
