@@ -20,19 +20,23 @@ export class PhotoService {
     // Retrieve cached photo array data
     const photoList = await Storage.get({ key: this.PHOTO_STORAGE });
     this.photos = JSON.parse(photoList.value) || [];
+    console.log(this.photos);
 
     // If running on the web...
     if (!this.platform.is('hybrid')) {
       // Display the photo by reading into base64 format
       for (let photo of this.photos) {
+        console.log(photo.filepath);
+        console.log(FilesystemDirectory.Data);
         // Read each saved photo's data from the Filesystem
-        const readFile = await Filesystem.readFile({
-            path: photo.filepath,
-            directory: FilesystemDirectory.Data
-        });
+        // const readFile = await Filesystem.readFile({
+        //     path: photo.filepath,
+        //     directory: FilesystemDirectory.Data
+            
+        // });
       
         // Web platform only: Load the photo as base64 data
-        photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
+        // photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
       }
     }
   }
@@ -55,6 +59,24 @@ export class PhotoService {
     });
     
     const savedImageFile = await this.savePicture(capturedPhoto);
+
+    // Add new photo to Photos array
+    this.photos.unshift(savedImageFile);
+
+    // Cache all photo data for future retrieval
+    Storage.set({
+      key: this.PHOTO_STORAGE,
+      value: JSON.stringify(this.photos)
+    });
+  }
+
+  public async addNewUploadToGallery(filepath, webviewPath, predictions) {
+    
+    const savedImageFile = {
+      filepath: filepath,
+      webviewPath: webviewPath,
+      predictions: predictions
+    }
 
     // Add new photo to Photos array
     this.photos.unshift(savedImageFile);
@@ -96,6 +118,7 @@ export class PhotoService {
       };
     }
   }
+
 
   // Read camera photo into base64 format based on the platform the app is running on
   private async readAsBase64(cameraPhoto: CameraPhoto) {
