@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 import { Photo, PhotoService } from '../services/photo.service';
+import { UploadService } from '../services/upload.service';
 
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import '@tensorflow/tfjs-backend-webgl'
 import '@tensorflow/tfjs-backend-cpu'
+
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorage, AngularFireUploadTask, createStorageRef } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-tab2',
@@ -13,14 +17,25 @@ import '@tensorflow/tfjs-backend-cpu'
 })
 export class Tab2Page {
   model: any;
+  percentage: any = 0;
+  items: any;
+  catRef: any;
 
-  constructor(public photoService: PhotoService, public actionSheetController: ActionSheetController) {}
+  constructor(
+    public photoService: PhotoService, 
+    public actionSheetController: ActionSheetController,
+    public afs: AngularFirestore,
+    public storage: AngularFireStorage,
+    public upload: UploadService
+    ) {}
 
   async ngOnInit() {
     await this.photoService.loadSaved();
     console.log("save photos loaded.");
     this.model = await mobilenet.load();
     console.log("model loaded");
+    console.log(this.storage.storage)
+    console.log(this.upload.getIPAddress());
   }
 
   onFileChanged(event) {
@@ -36,6 +51,10 @@ export class Tab2Page {
       image.height = 1000;
       console.log(image);
       this.classifyPhoto(image);
+
+
+      this.upload.uploadFile(file);
+      this.storage.ref('cat.jpg').getDownloadURL().subscribe(url => {this.catRef = url});
 		}
     // console.log(file);
   }
