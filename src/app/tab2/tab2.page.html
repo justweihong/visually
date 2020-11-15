@@ -6,8 +6,8 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content>
 
+<ion-content>
   <ion-refresher style="height:5em;" slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content 
       pullingIcon="chevron-down-circle-outline"
@@ -25,17 +25,18 @@
         <ion-row>
         <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
           <app-image-card [image]="photo" (click)="showActionSheet(photo, position)"></app-image-card>
+          <input type="file" class="upload-input" (change)="onFileChanged($event)" accept="image/*">
         </ion-col>
         </ion-row>
       </ion-grid>
 
-      <ion-fab class="upload-button" vertical="bottom" horizontal="center" slot="fixed">
-        <label>
-          <ion-fab-button>
-            <ion-icon name="camera"></ion-icon>
+      
+      <input id="upload-input" type="file" class="upload-input" (change)="onFileChanged($event)" accept="image/*">
+      <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+          <ion-fab-button id="upload-button" class="upload-button">
+              <ion-icon name="camera" style="z-index:1;"></ion-icon>
           </ion-fab-button>
-          <input type="file" class="upload-input" (change)="onFileChanged($event)" accept="image/*">
-        </label>
+        
       </ion-fab>
       
 </ion-content>

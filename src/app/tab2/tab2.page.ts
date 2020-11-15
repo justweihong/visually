@@ -5,6 +5,7 @@ import { Photo, PhotoService } from '../services/photo.service';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import '@tensorflow/tfjs-backend-webgl'
 import '@tensorflow/tfjs-backend-cpu'
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-tab2',
@@ -31,6 +32,15 @@ export class Tab2Page {
     this.model = await mobilenet.load();
     console.log("model loaded");
 
+    $( document ).ready(function() {
+      // console.log( "ready!" );
+      $('#upload-button').on('click', function(event) { 
+        event.preventDefault(); 
+        console.log("clicked!");
+        $("#upload-input").click(); 
+      });
+    });
+    
   }
 
   /**
