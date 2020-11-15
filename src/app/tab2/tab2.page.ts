@@ -8,6 +8,7 @@ import '@tensorflow/tfjs-backend-cpu'
 import * as $ from 'jquery';
 
 import { ModalController} from '@ionic/angular'; 
+import { ToastController } from '@ionic/angular';  
 import { ImageModalComponent } from '../components/image-modal/image-modal.component';
 
 @Component({
@@ -25,6 +26,7 @@ export class Tab2Page {
     public photoService: PhotoService, 
     public actionSheetController: ActionSheetController,
     public modalCtrl: ModalController,
+    public toastCtrl: ToastController
     ) {}
 
   /**
@@ -33,9 +35,7 @@ export class Tab2Page {
   async ngOnInit() {
     await this.photoService.loadSaved();
     console.log("save photos loaded.");
-    this.model = await mobilenet.load();
-    console.log("model loaded");
-    
+    await this.loadModel()    
   }
 
   clickUpload() {
@@ -55,6 +55,27 @@ export class Tab2Page {
       }
     });  
     return await modal.present();  
+  }  
+
+  async openTimedToast() {  
+    const toast = await this.toastCtrl.create({  
+      message: 'It is a Toast Notification',  
+      duration: 5000,
+      position: 'top',
+      translucent: true,
+    });  
+    toast.present();  
+  }
+
+  async loadModel() {  
+    const toast = await this.toastCtrl.create({  
+      message: 'loading model...',
+      position: 'top',
+      translucent: true,   
+    });  
+    toast.present(); 
+    this.model = await mobilenet.load() 
+    toast.dismiss();
   }  
 
   /**
