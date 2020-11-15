@@ -1,14 +1,10 @@
 import { Component } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 import { Photo, PhotoService } from '../services/photo.service';
-import { UploadService } from '../services/upload.service';
 
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import '@tensorflow/tfjs-backend-webgl'
 import '@tensorflow/tfjs-backend-cpu'
-
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-tab2',
@@ -24,9 +20,6 @@ export class Tab2Page {
   constructor(
     public photoService: PhotoService, 
     public actionSheetController: ActionSheetController,
-    public afs: AngularFirestore,
-    public storage: AngularFireStorage,
-    public upload: UploadService
     ) {}
 
   async ngOnInit() {
