@@ -22,6 +22,9 @@ export class Tab2Page {
     public actionSheetController: ActionSheetController,
     ) {}
 
+  /**
+   * Loads the gallery and the mobilenet model.
+   */
   async ngOnInit() {
     await this.photoService.loadSaved();
     console.log("save photos loaded.");
@@ -30,25 +33,31 @@ export class Tab2Page {
 
   }
 
-  onFileChanged(event) {
-    const self = this;
+  /**
+   * Uploads a new photo when a file change is detected.
+   */
+  async onFileChanged(event) {
+    const self = this; // To reference tab component in local scope.
     const file = event.target.files[0];
-    const filepath = file.name;
+
+    // Get image details from file.
     var reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = async (_event) => {
       const image = new Image();
-      var result = String(reader.result);
-      image.src = result;
-      image.onload = async function () {
-        console.log(`width : ${image.width} px`, `height: ${image.height} px`);
-        const webviewPath = result;
+      image.src = String(reader.result);
+      image.onload = async function () { // Loads the original image.width and image.height so that mobilenet model can classify
+        
+        // Get image upload details
+        const filepath = file.name;
+        const webviewPath = image.src;
         const predictions = await self.classifyPhoto(image);
         self.photoService.addNewUploadToGallery(filepath, webviewPath, predictions)
       };
-    
-		}
+    }
+
   }
+
   ab2str(buf) {
     return String.fromCharCode.apply(null, new Uint16Array(buf));
   }
@@ -59,14 +68,7 @@ export class Tab2Page {
    */
   async classifyPhoto(image: HTMLImageElement) {
     const predictions = await this.model.classify(image);
-    console.log('Predictions: ');
     console.log(predictions);
-    var resultDisplay1 = document.getElementById("result1");
-    var resultDisplay2 = document.getElementById("result2");
-    var resultDisplay3 = document.getElementById("result3");
-    resultDisplay1.textContent = predictions[0]['className'] + predictions[0]['probability'];
-    resultDisplay2.textContent = predictions[1]['className'] + predictions[1]['probability'];
-    resultDisplay3.textContent = predictions[2]['className'] + predictions[2]['probability'];
     return predictions;
   }
 
