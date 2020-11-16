@@ -20,10 +20,13 @@
 4) Run on the web: `ionic serve`.
 5) Run on web on the hosted platform [here](https://visually-84fb9.web.app/)
 
-##Tech Stack Consideration
+### Timeline
+Time for roll out v1.0 is estimated to be 1.5 days (from 14 Nov night to 16 Nov noon).
+
+## Tech Stack Consideration
 Considerations include React Native, Flutter and Ionic. I decided to go with Ionic because I am more familiar with Angular but it is my first time with Ionic. The main considerations for computer visions include OpenCV and Tensorflowjs libraries. OpenCV is a full fledged computer vision library while Tensorflow focuses on Machine learning models. In this case, the Tensorflowjs packages are used. In particular, pre-trained models in MobileNet were used, together with its additional backend CPU and WebGL.
 
-##Revision Control
+## Revision Control
 Separate branches were used for configurations of the features, UI enhancements , improving code quality, etc. They are subsequently merged with the `develop` branch. Once `develop` branch is been through testing and ready for release, it will be merged to the `main` branch for stable production. Forking of repo was not used because this is individual project.
 
 ## Challenges faced
