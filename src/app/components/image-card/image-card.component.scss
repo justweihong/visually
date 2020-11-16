@@ -1,0 +1,40 @@
+.image-card {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.image-card:hover .image-card-overlay {
+  display: block;
+}
+
+.image-card-overlay {
+  display: none;
+  position:absolute;
+  background-color: grey;
+  opacity: 0.2;
+  width: 100%;
+  height: 100%;
+}
+
+ion-avatar {
+  --border-radius: 5px;
+  position: relative;
+  height: fit-content;
+  width: fit-content;
+  /* width: 100%; */
+  /* height: 100%; */
+}
+
+.ion-image {
+  height:20vh;
+  // max-height: 20vh;
+}
+
+.image-name {
+  padding: 5px 0;
+  font-size: 11px;
+}
+.image-name:hover {
+  padding: 5px;
+  font-size: 15px;
+}

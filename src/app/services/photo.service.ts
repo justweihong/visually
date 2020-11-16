@@ -7,6 +7,12 @@ const { Camera, Filesystem, Storage } = Plugins;
 @Injectable({
   providedIn: 'root'
 })
+
+/**
+ * This service handles the uploading process of the photo into the local storage.
+ * Photos are kept in the local storage. However, they are not encrypted.
+ * Further extensions include encryption of local storage or the removal of local storage once cloud storage is fully implemented.
+ */
 export class PhotoService {
   public photos: Photo[] = [];
   private PHOTO_STORAGE: string = "photos";
@@ -20,32 +26,25 @@ export class PhotoService {
     // Retrieve cached photo array data
     const photoList = await Storage.get({ key: this.PHOTO_STORAGE });
     this.photos = JSON.parse(photoList.value) || [];
+    console.log(this.photos);
 
     // If running on the web...
     if (!this.platform.is('hybrid')) {
       // Display the photo by reading into base64 format
       for (let photo of this.photos) {
-        // Read each saved photo's data from the Filesystem
-        const readFile = await Filesystem.readFile({
-            path: photo.filepath,
-            directory: FilesystemDirectory.Data
-        });
+        console.log(photo.filepath);
+        console.log(FilesystemDirectory.Data);
       
         // Web platform only: Load the photo as base64 data
-        photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
+        // photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
       }
     }
   }
 
-  /* Use the device camera to take a photo:
-  // https://capacitor.ionicframework.com/docs/apis/camera
-  
-  // Store the photo data into permanent file storage:
-  // https://capacitor.ionicframework.com/docs/apis/filesystem
-  
-  // Store a reference to all photo filepaths using Storage API:
-  // https://capacitor.ionicframework.com/docs/apis/storage
-  */
+  /**
+   * Add new photos to Gallery.
+   * Currently not in used but will the backup in the event upload dosen't work.
+   */
   public async addNewToGallery() {
     // Take a photo
     const capturedPhoto = await Camera.getPhoto({
@@ -57,6 +56,27 @@ export class PhotoService {
     const savedImageFile = await this.savePicture(capturedPhoto);
 
     // Add new photo to Photos array
+    // this.photos.unshift(savedImageFile);
+
+    // Cache all photo data for future retrieval
+    Storage.set({
+      key: this.PHOTO_STORAGE,
+      value: JSON.stringify(this.photos)
+    });
+  }
+
+  /**
+   * Add new uploaded photos to Gallery.
+   */
+  public async addNewUploadToGallery(filepath, webviewPath, predictions) {
+    
+    const savedImageFile = {
+      filepath: filepath,
+      webviewPath: webviewPath,
+      predictions: predictions
+    }
+
+    // Add new photo to Photos array
     this.photos.unshift(savedImageFile);
 
     // Cache all photo data for future retrieval
@@ -66,7 +86,10 @@ export class PhotoService {
     });
   }
 
-  // Save picture to file on device
+  
+  /**
+   * Save a picture into the device.
+   */
   private async savePicture(cameraPhoto: CameraPhoto) {
     // Convert photo to base64 format, required by Filesystem API to save
     const base64Data = await this.readAsBase64(cameraPhoto);
@@ -81,7 +104,6 @@ export class PhotoService {
 
     if (this.platform.is('hybrid')) {
       // Display the new image by rewriting the 'file://' path to HTTP
-      // Details: https://ionicframework.com/docs/building/webview#file-protocol
       return {
         filepath: savedFile.uri,
         webviewPath: Capacitor.convertFileSrc(savedFile.uri),
@@ -96,6 +118,7 @@ export class PhotoService {
       };
     }
   }
+
 
   // Read camera photo into base64 format based on the platform the app is running on
   private async readAsBase64(cameraPhoto: CameraPhoto) {
@@ -149,4 +172,5 @@ export class PhotoService {
 export interface Photo {
   filepath: string;
   webviewPath: string;
+  predictions: any;
 }
