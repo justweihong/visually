@@ -12,6 +12,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule} from '@angular/fire/storage';
 import { environment } from '../environments/environment';
 import { HttpClientModule } from "@angular/common/http";  
+import { ImageModalModule } from './components/image-modal/image-modal.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +25,7 @@ import { HttpClientModule } from "@angular/common/http";
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
+    ImageModalModule
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent]

@@ -1,3 +1,35 @@
 ion-content ion-toolbar {
   --background: translucent;
 }
+
+.upload-button {
+  padding-bottom: 0.5em;
+}
+
+.upload-input {
+  display:none;
+}
+
+.sub-header {
+  text-align:center;
+  padding:5px;
+
+}
+
+.video-section {
+  position: relative; 
+  display: flex; 
+  justify-content: center;
+  align-content: center;
+}
+
+.walk-through-video {
+  width:100%;
+  max-height:100px;
+  border-radius: 2em;
+  background-color: white;
+  border: solid;
+  border-width: 5px;
+  border-color: #1a5369;
+}
+

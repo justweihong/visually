@@ -1,34 +1,42 @@
+
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Photo Gallery
+      Gallery
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Photo Gallery</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-img id="cat" src="../assets/cat.jpg"></ion-img>
-  <ion-img id="cat" [src]="catRef"></ion-img>
-  <div id="result1">result1</div>
-  <div id="result2">result2</div>
-  <div id="result3">result3</div>
-  <input type="file" (change)="onFileChanged($event)" accept="image/*">
-  <ion-grid>
-    <ion-row>
-    <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
-      <ion-img [src]="photo.webviewPath" (click)="showActionSheet(photo, position)"></ion-img>
-    </ion-col>
-    </ion-row>
-  </ion-grid>
+  <ion-refresher style="height:5em;" slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content 
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
+      <ion-header collapse="condense">
+        <ion-toolbar>
+          <ion-title size="large">Gallery</ion-title>
+        </ion-toolbar>
+      </ion-header>
 
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="photoService.addNewToGallery()">
-      <ion-icon name="camera"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+      <ion-grid>
+        <ion-row>
+        <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
+          <!-- <app-image-card [image]="photo" (click)="showActionSheet(photo, position)"></app-image-card> -->
+          <app-image-card [image]="photo" (click)="showModal(photo, position)"></app-image-card>
+        </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      
+      <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+        <ion-fab-button id="upload-button" class="upload-button" (click)="clickUpload()">
+            <ion-icon name="camera" ></ion-icon>
+            <input id="upload-input" type="file" class="upload-input" (change)="onFileChanged($event)" accept="image/*">
+        </ion-fab-button>
+        
+      </ion-fab>
+      
 </ion-content>

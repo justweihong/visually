@@ -5,6 +5,11 @@ import { Photo, PhotoService } from '../services/photo.service';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import '@tensorflow/tfjs-backend-webgl'
 import '@tensorflow/tfjs-backend-cpu'
+import * as $ from 'jquery';
+
+import { ModalController} from '@ionic/angular'; 
+import { ToastController } from '@ionic/angular';  
+import { ImageModalComponent } from '../components/image-modal/image-modal.component';
 
 @Component({
   selector: 'app-tab2',
@@ -20,6 +25,8 @@ export class Tab2Page {
   constructor(
     public photoService: PhotoService, 
     public actionSheetController: ActionSheetController,
+    public modalCtrl: ModalController,
+    public toastCtrl: ToastController
     ) {}
 
   /**
@@ -28,15 +35,53 @@ export class Tab2Page {
   async ngOnInit() {
     await this.photoService.loadSaved();
     console.log("save photos loaded.");
-    this.model = await mobilenet.load();
-    console.log("model loaded");
-
+    await this.loadModel()    
   }
+
+  clickUpload() {
+    $("#upload-input").click(); 
+  }
+
+  async showModal(photo, number) {  
+    const modal = await this.modalCtrl.create({  
+      component: ImageModalComponent,
+      cssClass: 'image-modal',
+      showBackdrop: true,
+      backdropDismiss: true,
+      animated: true,
+      swipeToClose: true,
+      componentProps: {
+        'photo': photo,
+        'number': number,
+      }
+    });  
+    return await modal.present();  
+  }  
+
+  async loadModel() {  
+    const toast = await this.toastCtrl.create({  
+      message: 'loading model...',
+      position: 'top',
+      translucent: true,   
+    });  
+    toast.present(); 
+    this.model = await mobilenet.load() 
+    toast.dismiss();
+  }  
 
   /**
    * Uploads a new photo when a file change is detected.
    */
   async onFileChanged(event) {
+
+    // Display uploading notification
+    const toast = await this.toastCtrl.create({  
+      message: 'uploading photo...',
+      position: 'top',
+      translucent: true,   
+    });  
+    toast.present(); 
+
     const self = this; // To reference tab component in local scope.
     const file = event.target.files[0];
 
@@ -52,7 +97,8 @@ export class Tab2Page {
         const filepath = file.name;
         const webviewPath = image.src;
         const predictions = await self.classifyPhoto(image);
-        self.photoService.addNewUploadToGallery(filepath, webviewPath, predictions)
+        await self.photoService.addNewUploadToGallery(filepath, webviewPath, predictions)
+        toast.dismiss();
       };
     }
 
@@ -107,4 +153,19 @@ export class Tab2Page {
     });
     await actionSheet.present();
   }
+
+
+  /**
+   * Refresh the gallery and model with ngOnInit hook.
+   */
+  async doRefresh(event) {
+    await this.ngOnInit();
+    event.target.complete();
+
+    // setTimeout(() => {
+    //   console.log('Async operation has ended');
+    //   event.target.complete();
+    // }, 2000);
+  }
+
 }

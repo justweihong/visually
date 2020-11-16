@@ -56,7 +56,7 @@ export class PhotoService {
     const savedImageFile = await this.savePicture(capturedPhoto);
 
     // Add new photo to Photos array
-    this.photos.unshift(savedImageFile);
+    // this.photos.unshift(savedImageFile);
 
     // Cache all photo data for future retrieval
     Storage.set({
@@ -172,4 +172,5 @@ export class PhotoService {
 export interface Photo {
   filepath: string;
   webviewPath: string;
+  predictions: any;
 }

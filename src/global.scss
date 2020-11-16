@@ -175,4 +175,13 @@
   ion-title.title-large {
     --color: white;
   }
+
+  .modal-wrapper {
+    background: #222;
+  }
+  .image-modal .modal-wrapper {
+    --background: white;
+    --width: 40vh;
+    --max-height: 65vh;
+  }
 }
