@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController} from '@ionic/angular';  
-import { Photo } from 'src/app/services/photo.service';
+import { ActionSheetController, ModalController} from '@ionic/angular';  
+import { Photo, PhotoService } from 'src/app/services/photo.service';
 import * as $ from 'jquery';
 
 @Component({
@@ -10,11 +10,16 @@ import * as $ from 'jquery';
 })
 export class ImageModalComponent implements OnInit {
   @Input() photo: Photo;
+  @Input() number: any;
   filepath: String;
   webviewPath: String;
   predictions: any;
 
-  constructor(public modalCtrl: ModalController) { }
+  constructor(
+    public photoService: PhotoService,
+    public modalCtrl: ModalController,
+    public actionSheetController: ActionSheetController,
+    ) { }
 
   ngOnInit() {
 
@@ -54,4 +59,27 @@ export class ImageModalComponent implements OnInit {
   dismiss() {  
     this.modalCtrl.dismiss();  
   }  
+
+  public async showActionSheet(photo: Photo, position: number) {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Photos',
+      buttons: [{
+        text: 'Delete',
+        role: 'destructive',
+        icon: 'trash',
+        handler: () => {
+          this.photoService.deletePicture(photo, position);
+          this.dismiss();
+        }
+      }, {
+        text: 'Cancel',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          // Does nothing.
+         }
+      }]
+    });
+    await actionSheet.present();
+  }
 }

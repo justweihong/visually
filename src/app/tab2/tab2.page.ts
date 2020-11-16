@@ -42,7 +42,7 @@ export class Tab2Page {
     $("#upload-input").click(); 
   }
 
-  async showModal(photo) {  
+  async showModal(photo, number) {  
     const modal = await this.modalCtrl.create({  
       component: ImageModalComponent,
       cssClass: 'image-modal',
@@ -52,6 +52,7 @@ export class Tab2Page {
       swipeToClose: true,
       componentProps: {
         'photo': photo,
+        'number': number,
       }
     });  
     return await modal.present();  
