@@ -42,3 +42,6 @@ Separate branches were used for configurations of the features, UI enhancements 
 * Similarly, to allow cross-platform suitability, different set of styles are applied across the different OS.
 * To ensure more consistency with CSS (SCSS) styling across devices, I used 'px' for borders and 'em'/'rem' for payout positioning
 * UI components and elements such as modals and upload image file button had to be refactored when tested on my phone because it did not work initially.
+
+## Contributions and Disclaimers
+The initial commit of this project is based on the 'Your first Angular app' template, which includes an in-built camera and gallery. In the case of Visually, the camera has been replaced, and it also supports uploading of images.
