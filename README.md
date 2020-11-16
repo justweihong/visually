@@ -3,6 +3,8 @@
 
 # Visually
 
+![Ui](src/assets/Ui.png)
+
 **Visually** is a hybrid app (mobile and web) to allow user to process uploaded image to show the the classifications involved. Visually is built with Ionic, Angular, Firebase and Node. Main libraries include Tensorflowjs to incorporate machine learning models. Do refer to the below sections for more details.
 
 ## Feature Overview
